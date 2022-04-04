@@ -24,9 +24,8 @@
         {% block validuser %}
         {% endblock %}
         <form class="d-flex">
-          <input type="text" placeholder="username" class="mr-4">
-          <input type="text" placeholder="password" class="mr-4">
-          <button class="btn btn-outline-success" type="submit">SignIn</button>
+           <a class="btn btn-outline-success" href="#">Sign In</a>
+          
         </form>
       </div>
      
@@ -49,7 +48,7 @@
           <a class="nav-link " aria-current="page" href="/blog/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/blog/bloglist/">Blog</a>
+          <a class="nav-link" href="/blog/bloglistapi/">Blog</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Category</a>
@@ -67,10 +66,13 @@
     <div class="container justify-content-center align-items-center mt-4 ">
 
       <form class="d-flex">
-        <input class="form-control me-4" type="search" placeholder="Search" aria-label="Search" style="width:60%;">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width:60%;">
+        <button class="btn btn-outline-success me-5" type="submit">Search</button>
+       
+        <a class="btn btn-outline-primary" href="/blog/create/">Add New Blog</a>
+    
       </form>
-      <a href="create">Add New Blog</a>
+      
     </div>
 
     {% block content %}
