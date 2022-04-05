@@ -22,7 +22,7 @@
           MyBlogs
         </a>
         {% if request.user %}
-          
+         
           <form class="d-flex">
             <h4 class="me-2">{{request.user}}</h4>
             <a class="btn btn-outline-success" href="/logout/">LogOut</a>
@@ -55,10 +55,10 @@
           <a class="nav-link " aria-current="page" href="/blog/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/blog/bloglistapi/">Blog</a>
+          <a class="nav-link" href="/blog/bloglistuser/">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Category</a>
+          <a class="nav-link" href="/blog/category/">Category</a>
         </li>
         <li class="nav-item">
           <a class="nav-link " href="/blog/about/">About</a>
@@ -70,12 +70,14 @@
       </ul>
            
     </div>
+
+   
     <div class="container justify-content-center align-items-center mt-4 ">
 
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width:60%;">
+      <form class="d-flex" action="/blog/searchblog/">
+        <input name="search" class="form-control me-2" type="text" placeholder="Search" aria-label="Search" style="width:60%;">
         <button class="btn btn-outline-success me-5" type="submit">Search</button>
-       
+      
         <a class="btn btn-outline-primary" href="/blog/create/">Add New Blog</a>
     
       </form>

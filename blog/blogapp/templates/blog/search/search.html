@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block search %}
+<form class="d-flex" action="/blog/searchblog/">
+    <input name="search" class="form-control me-2" type="text" placeholder="Search" aria-label="Search" style="width:60%;">
+    <button class="btn btn-outline-success me-5" type="submit">Search</button>
+    </form>
+{% endblock %}
