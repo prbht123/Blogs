@@ -21,12 +21,19 @@
           <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
           MyBlogs
         </a>
-        {% block validuser %}
-        {% endblock %}
+        {% if request.user %}
+          
+          <form class="d-flex">
+            <h4 class="me-2">{{request.user}}</h4>
+            <a class="btn btn-outline-success" href="/logout/">LogOut</a>
+           
+         </form>
+        {% else %}
         <form class="d-flex">
-           <a class="btn btn-outline-success" href="#">Sign In</a>
+           <a class="btn btn-outline-success" href="/login/">Sign In</a>
           
         </form>
+        {% endif %}
       </div>
      
     </nav>
