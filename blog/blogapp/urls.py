@@ -2,6 +2,7 @@
 from django.urls import path,include
 from . import views
 
+#app_name="blogapp"
 
 urlpatterns = [
     
@@ -10,6 +11,8 @@ urlpatterns = [
     path('contact/',views.Contact.as_view()),
     #path('create/',views.CreatePost.as_view()),
     path('create/',views.AddPostView.as_view()),
+    path('edit/<slug:slug>',views.UpdateBlogList.as_view()),
+    path('delete/<slug:slug>',views.DeleteBlog.as_view()),
     path('bloglist/',views.BlogList.as_view()),
     path('bloglistuser/',views.BlogListApiUser.as_view()),
     path('blogdetail/<int:pk>/',views.BlogDetailApi.as_view()),

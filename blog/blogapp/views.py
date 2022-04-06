@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from .models import Post,Category,PostImages
 from .serializers import PostSerializers
 from rest_framework import status
-from django.views.generic import ListView,CreateView,DetailView,UpdateView
-from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm
+from django.views.generic import ListView,CreateView,DetailView,UpdateView,DeleteView
+from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm
 # Create your views here.
 
 
@@ -41,8 +41,6 @@ class BlogListApi(APIView):
     def get(self, request):
         queryset = Post.objects.filter(status='published')
         images= PostImages.objects.all()
-        print("helloooo")
-        print(queryset)
         return Response({'posts': queryset,'images':images})
 
 class BlogListApiUser(APIView):
@@ -52,9 +50,8 @@ class BlogListApiUser(APIView):
     def get(self, request):
         if request.user.is_authenticated:
             queryset = Post.objects.filter(author=request.user)
-            print("helloooo")
-            print(queryset)
-            return Response({'posts': queryset})
+            images = PostImages.objects.all()
+            return Response({'posts': queryset,'images':images})
         else:
             return Response({'posts': None})
 
@@ -63,7 +60,31 @@ class AddPostView(CreateView):
     form_class = BlogPostForm
     template_name = 'blog/post/create.html'
     success_url = '/blog/images/'
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.author = self.request.user
+        user.slug = user.title.lower()
+        user.save()
+        return redirect('/blog/images/')
+
     
+
+class UpdateBlogList(UpdateView):
+    model = Post
+    form_class = BlogUpdateForm
+    template_name = 'blog/post/edit.html'
+    success_url = '/blog/'
+    def get_form_kwargs(self):
+        kwargs = super(UpdateBlogList,self).get_form_kwargs()
+        kwargs['instance'].status='draft'
+        kwargs.update()
+        return kwargs
+    
+
+class DeleteBlog(DeleteView):
+    model = Post
+    template_name = 'blog/post/delete.html'
+    success_url = '/blog/'
 
 class DetailedView(DetailView):
     model = Post
@@ -73,19 +94,20 @@ class DetailedView(DetailView):
     def get_context_data(self,*args, **kwargs):
         #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        print(context,"oooooooooooooooooooooooooooooo")
-        print(self.object)
-        context['post'] = Post.objects.filter(slug=self.object)[0]
+        context['post'] = Post.objects.filter(slug=self.object.slug)[0]
         context['images']=PostImages.objects.filter(post=context['post'])
         return context
     
 
 class SearchBlog(ListView):
+    """
+    Class view functon to handle search 
+    """
     template_name = 'blog/post/bloglist.html'
     model=Post
     #context_object_name = 'posts'
     def get_context_data(self, **kwargs):
-        title=self.request.GET.get('search')
+        title = self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.filter(title=title,status='published')
         return context
@@ -111,10 +133,12 @@ class CategoryBlogList(ListView):
     model=Post
     #context_object_name = 'posts'
     def get_context_data(self,*args, **kwargs):
-        #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        print(context)
-        context['posts'] = Post.objects.all()
+        print(self.kwargs['id'])
+        context['posts'] = Post.objects.filter(
+            category=self.kwargs['id'],
+            status='published')
+        context['images'] = PostImages.objects.all()
         return context
 
 

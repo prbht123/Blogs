@@ -41,7 +41,7 @@ class Post(models.Model):
 
 class PostImages(models.Model):
     post=models.ForeignKey(Post,on_delete = models.CASCADE,related_name='image_posts')
-    image = models.ImageField(upload_to='blog/images',blank=True)
+    image = models.ImageField(upload_to='blog/images/',blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
