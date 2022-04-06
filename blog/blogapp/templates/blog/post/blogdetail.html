@@ -8,7 +8,14 @@
 <div class="container">
     <div class="row justify-content-md-center pt-5">
     <div class="col-md-8">
-      <div class="col-12"><h1>{{post.title}}</h1></div>
+    <div class="row">
+      <div class="col-10"><h1>{{post.title}}</h1></div>
+      {% if post.author == user %}
+      <div class="col-1 "><h3><a class="btn btn-outline-primary" href="/blog/edit/{{post.slug}}">Edit</a></h3></div>
+      <div class="col-1"><h3><a class="btn btn-outline-danger" href="/blog/delete/{{post.slug}}">Delete</a></h3></div>
+        
+      {% endif %}
+    </div>
         <br/>
         <br/>
         <div class="col-12"><p><b>{{post.published_at | date:"M d, Y"}} by {{post.author}}</b></p></div>
