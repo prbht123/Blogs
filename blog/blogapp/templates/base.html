@@ -21,7 +21,7 @@
           <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
           MyBlogs
         </a>
-        {% if request.user %}
+        {% if user.is_authenticated %}
          
           <form class="d-flex">
             <h4 class="me-2">{{request.user}}</h4>
@@ -76,9 +76,13 @@
 
       <form class="d-flex" action="/blog/searchblog/">
         <input name="search" class="form-control me-2" type="text" placeholder="Search" aria-label="Search" style="width:60%;">
-        <button class="btn btn-outline-success me-5" type="submit">Search</button>
-      
-        <a class="btn btn-outline-primary" href="/blog/create/">Add New Blog</a>
+        <button class="btn btn-outline-success me-3" type="submit">Search</button>
+        {% if user.is_authenticated %}
+        <a class="btn btn-outline-primary me-1" href="/blog/create/">Add New Blog</a>
+        {% if user.is_staff %}
+        <a class="btn btn-outline-primary" href="/blog/approved/">Proposal for Approving</a>
+        {% endif %}
+        {% endif %}
     
       </form>
       

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 
@@ -21,5 +22,18 @@
     </div>
   </div>
 
-
+  <div class="container">
+    <div class="row justify-content-md-center pt-5">
+  {% for image in images %}
+  
+  
+    <div class="col-md-4">  
+      <img class="card-img-top" style="height:200px;width:300px;" src="{% if image.image %}{{ image.image.url }}{% endif %}">
+          
+      </div>
+  
+      
+{% endfor %}
+</div>
+</div>
 {% endblock %}
