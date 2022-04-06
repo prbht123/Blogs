@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <h3> list of blogs for approving ....</h3>
+    
+    {% for post in posts %}
+    
+    <div class="card mb-3" style="max-width: 100%;">
+        <div class="row no-gutters">
+          
+          <div class="col-md-6">
+            <div class="card-body">
+              <h5 class="card-title">{{post.title}}</h5>
+              <p class="card-text"> {{post.body}} <span><a href="/blog/blogdetailview/{{post.slug}}" style="text-decoration: none;">Read More...</a></span></p>
+              <p class="card-text"><small class="text-muted">{{post.author}}</small></p>
+              <a class="btn btn-outline-primary" href="/blog/approved/{{post.id}}">Approving</a>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
+    
+    {% endfor %}
+    </div>
+    
+
+{% endblock %}

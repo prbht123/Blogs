@@ -4,7 +4,7 @@
 <div class="row">
 {% for category in categories %}
 <div class="col-md-3 mt-3 mr-2 ">
-<a class="btn" href="/blog/categoryblog/?category={{category.slug}}" style="width: 100%;">
+<a class="btn" href="/blog/categoryblog/{{category.id}}" style="width: 100%;">
 <div class="card mb-4">
     <div class="card-body">
         {{category.category_name}}
