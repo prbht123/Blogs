@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Post,Category
+from .models import Blog,Category
 
 
 
 
 class PostSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Post
+        model = Blog
         fields=['id','title','slug','body','status','author','category',]
 
 

@@ -19,8 +19,11 @@ urlpatterns = [
     path('blogdetailview/<slug:slug>',views.DetailedView.as_view()),
     path('searchblog/',views.SearchBlog.as_view()),
     path('category/',views.CategoryList.as_view()),
+    path('createcategory/',views.CategoryCreate.as_view()),
+    path('createtag/',views.TagsCreate.as_view()),
     path('categoryblog/<int:id>',views.CategoryBlogList.as_view()),
     path('images/',views.ImageCreate.as_view()),
     path('approved/<int:pk>/',views.ApprovedByAdmin.as_view()),
     path('approved/',views.ApprovedListView.as_view()),
+    path('createcontact/',views.ContactUpload),
 ]

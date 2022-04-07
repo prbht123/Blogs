@@ -3,11 +3,11 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from .models import Post,Category,PostImages
+from .models import Blog,Category,PostImages
 from .serializers import PostSerializers
 from rest_framework import status
 from django.views.generic import ListView,CreateView,DetailView,UpdateView,DeleteView
-from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm
+from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm,CategoryForm,TagsForm
 # Create your views here.
 
 
@@ -39,7 +39,7 @@ class BlogListApi(APIView):
     template_name = 'blog/post/bloglist.html'
 
     def get(self, request):
-        queryset = Post.objects.filter(status='published')
+        queryset = Blog.objects.filter(status='published')
         images= PostImages.objects.all()
         return Response({'posts': queryset,'images':images})
 
@@ -49,14 +49,14 @@ class BlogListApiUser(APIView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            queryset = Post.objects.filter(author=request.user)
+            queryset = Blog.objects.filter(author=request.user)
             images = PostImages.objects.all()
             return Response({'posts': queryset,'images':images})
         else:
             return Response({'posts': None})
 
 class AddPostView(CreateView):
-    model = Post
+    model = Blog
     form_class = BlogPostForm
     template_name = 'blog/post/create.html'
     success_url = '/blog/images/'
@@ -70,7 +70,7 @@ class AddPostView(CreateView):
     
 
 class UpdateBlogList(UpdateView):
-    model = Post
+    model = Blog
     form_class = BlogUpdateForm
     template_name = 'blog/post/edit.html'
     success_url = '/blog/'
@@ -82,12 +82,12 @@ class UpdateBlogList(UpdateView):
     
 
 class DeleteBlog(DeleteView):
-    model = Post
+    model = Blog
     template_name = 'blog/post/delete.html'
     success_url = '/blog/'
 
 class DetailedView(DetailView):
-    model = Post
+    model = Blog
     #form_class = PostBlogImagesForm
     template_name = 'blog/post/blogdetail.html'
     #context_object_name = 'post'
@@ -104,7 +104,7 @@ class SearchBlog(ListView):
     Class view functon to handle search 
     """
     template_name = 'blog/post/bloglist.html'
-    model=Post
+    model=Blog
     #context_object_name = 'posts'
     def get_context_data(self, **kwargs):
         title = self.request.GET.get('search')
@@ -114,12 +114,12 @@ class SearchBlog(ListView):
 
 class SearchBlogUser(ListView):
     template_name = 'blog/post/bloglist.html'
-    model=Post
+    model=Blog
     #context_object_name = 'posts'
     def get_context_data(self, **kwargs):
         title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(title=title,author=request.user)
+        context['posts'] = Blog.objects.filter(title=title,author=request.user)
         return context
 
 
@@ -130,12 +130,12 @@ class CategoryList(ListView):
    
 class CategoryBlogList(ListView):
     template_name = 'blog/post/bloglist.html'
-    model=Post
+    model=Blog
     #context_object_name = 'posts'
     def get_context_data(self,*args, **kwargs):
         context = super().get_context_data(**kwargs)
         print(self.kwargs['id'])
-        context['posts'] = Post.objects.filter(
+        context['posts'] = Blog.objects.filter(
             category=self.kwargs['id'],
             status='published')
         context['images'] = PostImages.objects.all()
@@ -149,7 +149,7 @@ class BlogDetailApi(APIView):
     template_name = 'blog/post/blogdetail.html'
 
     def get(self, request):
-        queryset = Post.objects.filter(id=1)
+        queryset = Blog.objects.filter(id=1)
         return Response({'posts': queryset})
 
 
@@ -162,20 +162,60 @@ class ImageCreate(CreateView):
     success_url = '/blog/'
 
 class ApprovedByAdmin(UpdateView):
-    model=Post
+    model=Blog
     form_class = ApprovedForm
     template_name = 'blog/admin/approved.html'
     success_url ="/blog/"
 
 class ApprovedListView(ListView):
     template_name = 'blog/admin/approvedhome.html'
-    model=Post
+    model=Blog
     #context_object_name = 'posts'
     def get_context_data(self,*args, **kwargs):
         #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(status='draft')
+        context['posts'] = Blog.objects.filter(status='draft')
         return context
 
+# class ContactUpload(CreateView):
+#     model = Contact
+#     form_class = ContactForm
+#     template_name = 'blog/contact.html'
+#     success_url = '/blog/'
+#     # def form_valid(self, form):
+#     #     data = form.save(commit=False)
+#     #     print(data)
+#     #     return redirect('/blog/images/')
 
+
+def ContactUpload(request):
+    if request.method == 'POST':
+        obj = Contact(
+        name = request.POST.get('name'),
+        email = request.POST.get('email'),
+        mobile_number = request.POST.get('mobile_number'),
+        messages = request.POST.get('messages')
+        )
+        #obj.save()
+        return redirect('/blog/')
+
+class CategoryCreate(CreateView):
+    form_class = CategoryForm
+    template_name = 'blog/category/addcategory.html'
+    #success_url = '/blog/'
+    def form_valid(self, form):
+        data = form.save(commit=False)
+        data.slug = data.category_name.lower()
+        data.save()
+        return redirect('/blog/')
+
+class TagsCreate(CreateView):
+    form_class = TagsForm
+    template_name = 'blog/tag/tags.html'
+    #success_url = '/blog/'
+    def form_valid(self, form):
+        data = form.save(commit=False)
+        data.slug = data.name.lower()
+        data.save()
+        return redirect('/blog/')
 

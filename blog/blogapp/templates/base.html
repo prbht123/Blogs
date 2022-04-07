@@ -15,23 +15,23 @@
  
 
 
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light text-white" style="background-color: 	#4d0000;">
      
       <div class="container-fluid">
-        <a class="navbar-brand" href="/blog/">
-          <img src="{% static 'img/blog.jpg' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        <a class="navbar-brand text-white" href="/blog/">
+          <img src="{% static 'img/blog.jpg' %}" alt="" width="30" height="24" class="d-inline-block align-text-top" style="border-radius:10px;">
           MyBlogs
         </a>
         {% if user.is_authenticated %}
          
           <form class="d-flex">
             <h4 class="me-2">{{request.user}}</h4>
-            <a class="btn btn-outline-success" href="/logout/">LogOut</a>
+            <a class="btn text-white" href="/logout/">LogOut</a>
            
          </form>
         {% else %}
         <form class="d-flex">
-           <a class="btn btn-outline-success" href="/login/">Sign In</a>
+           <a class="btn text-white" href="/login/">Sign In</a>
           
         </form>
         {% endif %}
@@ -50,7 +50,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     -->
-    <div class="container justify-content-center align-items-center">
+    <div class="container justify-content-center align-items-center" style="background-color:#ffb380;">
       <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
           <a class="nav-link " aria-current="page" href="/blog/">Home</a>
@@ -81,7 +81,9 @@
         {% if user.is_authenticated %}
         <a class="btn btn-outline-primary me-1" href="/blog/create/">Add New Blog</a>
         {% if user.is_staff %}
-        <a class="btn btn-outline-primary" href="/blog/approved/">Proposal for Approving</a>
+        <a class="btn btn-outline-primary me-1" href="/blog/approved/">Proposal for Approving</a>
+        <a class="btn btn-outline-primary me-1" href="/blog/createcategory/">Add Category</a>
+        <a class="btn btn-outline-primary" href="/blog/createtag/">Add Tags</a>
         {% endif %}
         {% endif %}
     
