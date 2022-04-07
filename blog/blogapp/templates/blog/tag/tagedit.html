@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="container pt-5">
-    <form method="post" novalidate action="" enctype='multipart/form-data'>
+    <form method="post" novalidate action="">
         {% csrf_token %}
         {% for field in form.visible_fields %}
             <div class="form-group">
