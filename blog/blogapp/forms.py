@@ -6,6 +6,11 @@ class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ['title','body','category']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Title...','class':'form-control mb-2'}),
+            #'body': forms.TextAreaInput(attrs={'placeholder': 'Messages...','class':'form-control mb-4'}),
+            
+        }
 
 
 class ImagePostForm(forms.ModelForm):

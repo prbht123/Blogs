@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container sm-6 mt-4 ">
+<h4>List Of Tags</h4>
+</div>
+
+<div class="container justify-content-center mt-4">
+    
+    <div class="row">
+
+            
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Tag Name</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for tag in tags %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{tag.name}}</td>
+                <td><a class="btn btn-outline-primary me-1" href="/blog/updatetag/{{tag.id}}">Update</a>
+                    <a class="btn btn-outline-primary" href="/blog/deletetag/{{tag.id}}">Delete</a>
+                </td>
+              
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+   
+    </div>
+       
+
+</div>
+{% endblock %}

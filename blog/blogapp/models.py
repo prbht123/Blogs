@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 class Category(models.Model):
     category_name=models.CharField(max_length=100)
     slug= models.SlugField(max_length=250)
-    image = models.ImageField(upload_to='blog/category/images/',blank=True)
+    image = models.ImageField(upload_to='blog/category/images/',blank=True,null=True)
     description = models.CharField(max_length=500, null=True,blank=True, verbose_name='Description')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -51,7 +51,7 @@ class Blog(models.Model):
 
 class PostImages(models.Model):
     post = models.ForeignKey(Blog,on_delete = models.CASCADE,related_name='image_posts')
-    image = models.ImageField(upload_to='blog/images/',blank=True)
+    image = models.ImageField(upload_to='blog/images/',blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

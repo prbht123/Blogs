@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h4 class="text-center mt-4">Add Post</h4>
+<h4 class="text-center mt-2 mb-2">Add Post</h4>
 
-<div class="container pt-5 offset-md-3">
+<div class="container pt-5 ">
     
-    <form method="post" novalidate action="">
+    <form method="post" novalidate action="" enctype='multipart/form-data'>
         {% csrf_token %}
         {% for field in form.visible_fields %}
             <div class="form-group">

@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from .models import Blog,Category,PostImages
+from .models import Blog,Category,PostImages,Tag
 from .serializers import PostSerializers
 from rest_framework import status
 from django.views.generic import ListView,CreateView,DetailView,UpdateView,DeleteView
@@ -94,7 +94,7 @@ class DetailedView(DetailView):
     def get_context_data(self,*args, **kwargs):
         #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['post'] = Post.objects.filter(slug=self.object.slug)[0]
+        context['post'] = Blog.objects.filter(slug=self.object.slug)[0]
         context['images']=PostImages.objects.filter(post=context['post'])
         return context
     
@@ -159,7 +159,12 @@ class ImageCreate(CreateView):
     #model = Post
     form_class = ImagePostForm
     template_name = 'blog/images.html'
-    success_url = '/blog/'
+    #success_url = '/blog/'
+    def form_valid(self, form):
+        data = form.save(commit=False)
+        data.image = self.request.FILES['image']
+        data.save()
+        return redirect('/blog/')
 
 class ApprovedByAdmin(UpdateView):
     model=Blog
@@ -199,6 +204,11 @@ def ContactUpload(request):
         #obj.save()
         return redirect('/blog/')
 
+class CategoryOnlyList(ListView):
+    model = Category
+    template_name = 'blog/category/listcategory.html'
+    context_object_name = 'categories'
+
 class CategoryCreate(CreateView):
     form_class = CategoryForm
     template_name = 'blog/category/addcategory.html'
@@ -206,8 +216,27 @@ class CategoryCreate(CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         data.slug = data.category_name.lower()
+        data.image = self.request.FILES['image']
         data.save()
         return redirect('/blog/')
+
+class CategoryDelete(DeleteView):
+    model = Category
+    template_name = 'blog/post/delete.html'
+    success_url = '/blog/'
+
+class CategoryUpdate(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'blog/category/categoryedit.html'
+    #success_url = '/blog/'
+    def form_valid(self, form):
+        data = form.save(commit=False)
+        data.slug = data.category_name.lower()
+        data.image = self.request.FILES['image']
+        data.save()
+        return redirect('/blog/')
+
 
 class TagsCreate(CreateView):
     form_class = TagsForm
@@ -218,4 +247,25 @@ class TagsCreate(CreateView):
         data.slug = data.name.lower()
         data.save()
         return redirect('/blog/')
+
+class TagsDelete(DeleteView):
+    model = Tag
+    template_name = 'blog/post/delete.html'
+    success_url = '/blog/'
+
+class TagsUpdate(UpdateView):
+    model = Tag
+    form_class = TagsForm
+    template_name = 'blog/tag/tagedit.html'
+    success_url = '/blog/'
+    def get_form_kwargs(self):
+        kwargs = super(TagsUpdate,self).get_form_kwargs()
+        #kwargs['instance'].status='draft'
+        kwargs.update()
+        return kwargs
+
+class TagsOnlyList(ListView):
+    model = Tag
+    template_name = 'blog/tag/listtag.html'
+    context_object_name = 'tags'
 

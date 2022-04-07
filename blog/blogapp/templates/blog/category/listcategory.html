@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container sm-6 mt-4 ">
+<h4>List Of Category</h4>
+</div>
+
+<div class="container justify-content-center mt-4">
+    
+    <div class="row">
+
+            
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{category.category_name}}</td>
+                <td>{{category.image}}</td>
+                <td>{{category.description}}</td>
+                <td><a class="btn btn-outline-primary me-1" href="/blog/updatecategory/{{category.id}}">Update</a>
+                    <a class="btn btn-outline-primary" href="/blog/deletecategory/{{category.id}}">Delete</a>
+                </td>
+              
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+   
+    </div>
+       
+
+</div>
+{% endblock %}
