@@ -3,15 +3,19 @@
 
 {% block content %}
 <div class="container">
-<h3> list of blogs ....</h3>
-
+  
+<hr>
+<div class="mb-3" style="max-width: 100%;">
+  <div class="row">
+    <div class="col-md-8">
 {% for post in posts %}
 
-<div class="card mb-3" style="max-width: 100%;">
+
     <div class="row no-gutters">
-      <div class="col-md-4">
-       
-          {% for postimage in images %}
+      <div class="col-md-3 me-3">
+        <img class="card-img-top" style="height:100%;width:120%;" src="{% if post.image %}{{ post.image.url }}{% endif %}">
+          
+          <!-- {% for postimage in images %}
           
           {% if postimage.post == post %}
           <img class="card-img-top" style="height:200px;width:300px;" src="{% if postimage.image %}{{ postimage.image.url }}{% endif %}">
@@ -19,9 +23,9 @@
        
           
           {% endif %}
-        {% endfor %}
+        {% endfor %} -->
       </div>
-      <div class="col-md-8">
+      <div class="col-md-5 me-3">
         <div class="card-body">
           <h5 class="card-title">{{post.title}}</h5>
           <p class="card-text"> {{post.body}} <span><a href="/blog/blogdetailview/{{post.slug}}" style="text-decoration: none;">Read More...</a></span></p>
@@ -29,13 +33,95 @@
          
         </div>
       </div>
-    </div>
-  </div>
-
-
-
+      
+    </div><br>
+ 
 {% endfor %}
 </div>
+   
+<div class="col-md-4 pl-4">
+  <h5 class="font-weight-bold spanborder"><span>Popular</span></h5>
+  <ol class="list-featured">
+      <li>
+          <span>
+              <h6 class="font-weight-bold">
+                  <a href="./article.html" class="text-dark">Did Supernovae Kill Off Large Ocean Animals?</a>
+              </h6>
+              <p class="text-muted">
+                  Jake Bittle in SCIENCE
+              </p>
+          </span>
+      </li>
+      <li>
+          <span>
+              <h6 class="font-weight-bold">
+                  <a href="./article.html" class="text-dark">Humans Reversing Climate Clock: 50 Million
+                      Years</a>
+              </h6>
+              <p class="text-muted">
+                  Jake Bittle in SCIENCE
+              </p>
+          </span>
+      </li>
+      <li>
+          <span>
+              <h6 class="font-weight-bold">
+                  <a href="./article.html" class="text-dark">Unprecedented Views of the Birth of Planets</a>
+              </h6>
+              <p class="text-muted">
+                  Jake Bittle in SCIENCE
+              </p>
+          </span>
+      </li>
+      <li>
+          <span>
+              <h6 class="font-weight-bold">
+                  <a href="./article.html" class="text-dark">Effective New Target for Mood-Boosting Brain
+                      Stimulation Found</a>
+              </h6>
+              <p class="text-muted">
+                  Jake Bittle in SCIENCE
+              </p>
+          </span>
+      </li>
+      <li>
+          <span>
+              <h6 class="font-weight-bold">
+                  <a href="./article.html" class="text-dark">Did Supernovae Kill Off Large Ocean Animals?</a>
+              </h6>
+              <p class="text-muted">
+                  Jake Bittle in SCIENCE
+              </p>
+          </span>
+      </li>
+  </ol>
+</div>
+</div>
+</div>
 
+
+<div class="container justify-content-center align-items-center mt-4 ">
+  <div class="row ">
+    <hr>
+    {% if categories %}
+    <h4>Related Blogs</h4>
+    {% endif %}
+    <hr>
+    <h4>{{post.category}}</h4>
+    {% for category in categories %}
+     <div class="col-sm-3 card me-2" style="width: 15rem;">
+      <a href="/blog/categoryblog/{{category.id}}" style="text-decoration: none;">
+    <img src="{% if category.image %}{{ category.image.url }}{% endif %}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{category.category_name}}</h5>
+      <p class="card-text">{% if category.description %} {{category.description}}{% endif %}</p>
+     
+    </div>
+  </a>
+ </div>
+
+   {% endfor %}
+</div>
+</div>
 
 {% endblock %}

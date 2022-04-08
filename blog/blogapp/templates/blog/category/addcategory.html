@@ -12,7 +12,7 @@
         <form method="post" novalidate action="" enctype='multipart/form-data'>
             {% csrf_token %}
             {% for field in form.visible_fields %}
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="{{ field.id_for_label }}">{{field.label}}</label>
                     {{field}}
                     {% for error in field.errors %}
@@ -20,13 +20,15 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-            <div>
+           
+           <br>
+                
                 <button type="submit" class="btn btn-success">Submit</button>
-                <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
-            </div>
+                <a href="{% url 'home' %}" class="btn btn-light">Cancel</a>
+           
         </form>
-
-        </div>
+    </div>
+       
         <div class="col-md-5">
 
             <a class="btn btn-outline-primary me-1" href="/blog/categorylist/">List Of Category</a>
@@ -35,4 +37,5 @@
          </div>
 </div>
 </div>
+
 {% endblock %}

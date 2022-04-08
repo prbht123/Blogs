@@ -3,13 +3,13 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from .models import Blog,Category,PostImages,Tag
+from .models import Blog,Category,PostImages,Contact,Tag
 from .serializers import PostSerializers
 from rest_framework import status
 from django.views.generic import ListView,CreateView,DetailView,UpdateView,DeleteView
 from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm,CategoryForm,TagsForm
 # Create your views here.
-
+from django.core.mail import send_mail
 
 def home(request):
     return render(request,'blog/home.html')
@@ -28,7 +28,7 @@ class About(TemplateView):
     template_name='blog/about.html'
 
 class Contact(TemplateView):
-    template_name='blog/contact.html'
+    template_name = 'blog/contact.html'
 
 class BlogList(TemplateView):
     template_name='blog/post/bloglist.html'
@@ -41,7 +41,8 @@ class BlogListApi(APIView):
     def get(self, request):
         queryset = Blog.objects.filter(status='published')
         images= PostImages.objects.all()
-        return Response({'posts': queryset,'images':images})
+        categories = Category.objects.all()
+        return Response({'posts': queryset,'images':images,'categories':categories})
 
 class BlogListApiUser(APIView):
     renderer_classes = [TemplateHTMLRenderer]
@@ -51,7 +52,8 @@ class BlogListApiUser(APIView):
         if request.user.is_authenticated:
             queryset = Blog.objects.filter(author=request.user)
             images = PostImages.objects.all()
-            return Response({'posts': queryset,'images':images})
+            categories = Category.objects.all()
+            return Response({'posts': queryset,'images':images,'categories':categories})
         else:
             return Response({'posts': None})
 
@@ -59,19 +61,19 @@ class AddPostView(CreateView):
     model = Blog
     form_class = BlogPostForm
     template_name = 'blog/post/create.html'
-    success_url = '/blog/images/'
+    success_url = '/blog/'
     def form_valid(self, form):
         user = form.save(commit=False)
         user.author = self.request.user
         user.slug = user.title.lower()
         user.save()
-        return redirect('/blog/images/')
+        return redirect('/blog/')
 
     
 
 class UpdateBlogList(UpdateView):
     model = Blog
-    form_class = BlogUpdateForm
+    form_class = BlogPostForm            #BlogUpdateForm  
     template_name = 'blog/post/edit.html'
     success_url = '/blog/'
     def get_form_kwargs(self):
@@ -95,7 +97,9 @@ class DetailedView(DetailView):
         #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
         context['post'] = Blog.objects.filter(slug=self.object.slug)[0]
-        context['images']=PostImages.objects.filter(post=context['post'])
+        context['images'] = PostImages.objects.filter(post=context['post'])
+        #print(context['post'].category)
+        context['related_blog'] = Blog.objects.filter(category = context['post'].category)
         return context
     
 
@@ -109,7 +113,7 @@ class SearchBlog(ListView):
     def get_context_data(self, **kwargs):
         title = self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(title=title,status='published')
+        context['posts'] = Blog.objects.filter(title=title,status='published')
         return context
 
 class SearchBlogUser(ListView):
@@ -195,13 +199,23 @@ class ApprovedListView(ListView):
 
 def ContactUpload(request):
     if request.method == 'POST':
-        obj = Contact(
+        gg=Contact.objects.all()
+        print(gg)
+        obj=Contact(
         name = request.POST.get('name'),
         email = request.POST.get('email'),
         mobile_number = request.POST.get('mobile_number'),
         messages = request.POST.get('messages')
         )
-        #obj.save()
+        print(obj.name)
+        #print(obj.id)
+        obj.save()
+        print("oooooooooooooooooooooooooooooooo")
+        cd={
+            'to':'Admin123@YOPmail.com'
+        }
+        send_mail("subject", "message",request.POST.get('email'),[cd['to']])
+        print("88888888888888888888888888")
         return redirect('/blog/')
 
 class CategoryOnlyList(ListView):
@@ -269,3 +283,5 @@ class TagsOnlyList(ListView):
     template_name = 'blog/tag/listtag.html'
     context_object_name = 'tags'
 
+
+    
