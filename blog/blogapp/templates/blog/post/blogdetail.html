@@ -9,7 +9,7 @@
     <div class="row justify-content-md-center pt-5">
     <div class="col-md-8">
     <div class="row">
-      <div class="col-10"><h1>{{post.title}}</h1></div>
+      <div class="col-10"></div>
       {% if post.author == user %}
       <div class="col-1 "><h3><a class="btn btn-outline-primary" href="/blog/edit/{{post.slug}}">Edit</a></h3></div>
       <div class="col-1"><h3><a class="btn btn-outline-danger" href="/blog/delete/{{post.slug}}">Delete</a></h3></div>
@@ -18,37 +18,37 @@
     </div>
         <br/>
         <br/>
-        <div class="col-12"><p><b>{{post.published_at | date:"M d, Y"}} by {{post.author}}</b></p></div>
+        <div class = "row">
+          <h3>{{post.title}}</h3>
+        <div class="col-6"><p>{{post.publish}} by <b>{{post.author}}</b></p>
+          <p>Category : {{post.category.category_name}}</p>
+        </div>
+        <div class="col-6">  
+          <img class="card-img-top" style="height:300px;width:400px;" src="{% if post.image %}{{ post.image.url }}{% endif %}">
+              
+          </div>
+        </div>
         <br/>
       <div class="col-12"><p>{{post.body|safe}}</p></div>
       <br/>
-      <div class="col-12"><p>{{post.status}}</p></div>
-      <br/>
-      <div class="col-12"><p>{{post.category.category_name}}</p></div>
+      
+     
+      <br>
+      
     </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="row justify-content-md-center pt-5">
-  {% for image in images %}
   
-  
-    <div class="col-md-4">  
-      <img class="card-img-top" style="height:200px;width:300px;" src="{% if image.image %}{{ image.image.url }}{% endif %}">
-          
-      </div>
-  
-      
-{% endfor %}
-</div>
-</div>
 
 <div class="container justify-content-center align-items-center mt-4 ">
   <div class="row ">
+    {% if related_blog %}
     <h4>Related Blogs</h4>
     <hr>
+    
     <h4>{{post.category}}</h4>
+    {% endif %}
     {% for blog in related_blog %}
 
      <div class="col-sm-3 card me-4" style="width: 20rem;">
@@ -56,8 +56,8 @@
     <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{blog.title}}</h5>
-      <p class="card-text"> {{blog.body}}</p>
-     
+      <p class="card-text"> {{blog.body|truncatechars:50}}</p>
+      
     </div>
     </a>
  </div>
