@@ -3,7 +3,8 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from .models import Blog,Category,PostImages,Contact,Tag
+from .models import Blog,Category,PostImages,Tag
+from blogapp.models import Contact as ContactDetail
 from .serializers import PostSerializers
 from rest_framework import status
 from django.views.generic import ListView,CreateView,DetailView,UpdateView,DeleteView
@@ -203,8 +204,7 @@ class ApprovedListView(ListView):
 
 def ContactUpload(request):
     if request.method == 'POST':
-        gg = Contact.objects.all()
-        obj = Contact(
+        obj = ContactDetail(
         name = request.POST.get('name'),
         email = request.POST.get('email'),
         mobile_number = request.POST.get('mobile_number'),

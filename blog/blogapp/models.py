@@ -71,7 +71,7 @@ class PostImages(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=100, null=True, verbose_name='Name')
     email = models.EmailField(null=True)
-    mobile_number = models.BigIntegerField()
-    messages = models.TextField()
+    mobile_number = models.BigIntegerField(null=True)
+    messages = models.TextField(null=True)
     def __str__(self):
         return f"{ self.name }" 
