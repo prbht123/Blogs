@@ -13,8 +13,20 @@ from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm
 from django.core.mail import send_mail
 from django.utils import timezone
 
-def home(request):
-    return render(request,'blog/home.html')
+class home(CreateView):
+    model = Blog
+    form_class = CategoryForm
+    template_name = 'blog/home.html'
+    #success_url = '/blog/'
+    #return render(request,'blog/home.html')
+    def form_valid(self, form):
+        print("0000000000000000000000000000")
+        print(self.request)
+        data = form.save(commit=False)
+       # data.slug = data.category_name.lower()
+        data.image = self.request.FILES['image']
+        data.save()
+        return redirect('/blog/')
 
 class CreatePost(TemplateView):
     template_name = 'blog/post/create.html'

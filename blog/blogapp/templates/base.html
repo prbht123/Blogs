@@ -111,53 +111,54 @@
     <div class="container justify-content-center align-items-center mt-4 ">
       {% if user.is_authenticated %}
       <div class="row ">
-      <div class="col-sm-6 card me-4" style="width: 16rem;">
-        <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+      <div class="col-sm-6 me-4" style="width: 16rem;">
+        <img src="{% static 'img/addblog.jpeg' %}" class="card-img-top" alt="..." style="height:35%;width: 80%;">
         <div class="card-body">
           <p class="card-text">Many blogs provide commentary on a particular subject or topic, ranging from philosophy, religion, and arts to science, politics, and sports.</p>
           <a class="btn btn-outline-primary me-1" href="/blog/create/">Add New Blog</a>
         </div>
         </div>
         {% if not user.is_staff %}
-        <div class="col-sm-6 card me-4" style="width: 16rem;">
-          <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+        <div class="col-sm-6 me-4" style="width: 16rem;">
+          <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="..." style="height:35%;width: 80%;">
           <div class="card-body">
-            <p class="card-text"> Others function as more personal online diaries or online brand advertising of a particular individual or company.</p>
+            <p class="card-text"> Myblogs and Others function as more personal online diaries or online brand advertising of a particular individual or company and industries.</p>
             <a class="btn btn-outline-primary me-1" href="#">My Blog</a>
           </div>
+          
         </div>
-        <div class="col-sm-6 card me-4" style="width: 45rem;margin-left: 10px;">
+        <!-- <div class="col-sm-6 me-4" style="width: 35rem;margin-left: 5px;">
           
           <div class="card-body">
-            <h5 class="card-title">User Name</h5>
+            <h5 class="card-title">User Name : {{user.username}}</h5> 
             <p> User Address</p>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             
           </div>
-        </div>
+        </div> -->
         {% endif %}
       
       {% if user.is_staff %}
-      <div class="col-sm-6 card me-4" style="width: 16rem;">
-        <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+      <div class="col-sm-6 me-4" style="width: 16rem;">
+        <img src="{% static 'img/approval.jpg' %}" class="card-img-top" alt="..." style="height:35%;width: 80%;">
         <div class="card-body">
           <p class="card-text">'Blog' and 'blogging' are now loosely used for content creation and sharing on social media, especially when the content is long-form.</p>
           <a class="btn btn-outline-primary me-1" href="/blog/approved/">Approval</a>
         
         </div>
       </div>
-      <div class="col-sm-6 card me-4" style="width: 16rem;">
-        <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+      <div class="col-sm-6 me-4" style="width: 16rem;">
+        <img src="{% static 'img/category.jpeg' %}" class="card-img-top" alt="..." style="height:35%;width: 80%;">
         <div class="card-body">
           <p class="card-text">The modern blog evolved from the online diary where people would keep a running account of the events in their personal lives.</p>
           <a class="btn btn-outline-primary me-1" href="/blog/createcategory/">Add Category</a>
         
         </div>
       </div>
-      <div class="col-sm-6 card" style="width: 16rem;">
-        <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+      <div class="col-sm-6" style="width: 16rem;">
+        <img src="{% static 'img/addtags.png' %}" class="card-img-top" alt="..." style="height:35%;width: 80%;">
         <div class="card-body">
-          <p class="card-text">Blogs can be hosted by dedicated blog hosting services, on regular web hosting services, or run using blog software. </p>
+          <p class="card-text">Blogs can be hosted by dedicated blog hosting services, on regular web hosting services, or run using blog software and development. </p>
           <a class="btn btn-outline-primary" href="/blog/createtag/">Add Tags</a>
         
         </div>
