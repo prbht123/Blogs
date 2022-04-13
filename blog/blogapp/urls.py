@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     
     path('', views.BlogListApi.as_view(),name = 'home'),
+    path('dragimages/',views.home.as_view()),
     path('about/',views.About.as_view()),
     path('contact/',views.Contact.as_view()),
     #path('create/',views.CreatePost.as_view()),

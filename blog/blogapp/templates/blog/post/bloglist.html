@@ -110,7 +110,7 @@
     <hr>
     <h4>{{post.category}}</h4>
     {% for category in categories %}
-     <div class="col-sm-3 card me-2" style="width: 15rem;">
+     <div class="col-sm-3 me-2" style="width: 15rem;">
       <a href="/blog/categoryblog/{{category.id}}" style="text-decoration: none;">
     <img src="{% if category.image %}{{ category.image.url }}{% endif %}" class="card-img-top"  style="height:200px;width:100%;" alt="...">
     <div class="card-body">
