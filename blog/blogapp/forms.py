@@ -5,11 +5,12 @@ from .models import Blog,PostImages,Contact,Category,Tag
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ['title','body','category','image']
+        fields = ['title','body','category','tags','image']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Title...','class':'form-control mb-2'}),
             'body': forms.Textarea(attrs={'placeholder': 'Messages...','class':'form-control mb-4'}),
             'category' : forms.Select(attrs={'class':'form-control mb-4'}),
+            'tags' : forms.TextInput(attrs={'placeholder': 'tags...','class':'form-control mb-4'}),
         }
 
 

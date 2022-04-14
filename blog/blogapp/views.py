@@ -12,11 +12,13 @@ from blogapp.forms import BlogPostForm,ImagePostForm,ApprovedForm,BlogUpdateForm
 # Create your views here.
 from django.core.mail import send_mail
 from django.utils import timezone
+from .utills import Red
+import time
 
 class home(CreateView):
     model = Blog
     form_class = CategoryForm
-    template_name = 'blog/home.html'
+    template_name = 'blog/home1.html'
     #success_url = '/blog/'
     #return render(request,'blog/home.html')
     def form_valid(self, form):
@@ -83,9 +85,11 @@ class AddPostView(CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.author = self.request.user
-        print(user.author)
+        tag = list(self.request.POST['tags'].split(','))
         #user.slug = user.title.lower()
         user.save()
+        for d in tag:
+            user.tags.add(d)
         return redirect('/blog/')
 
 class UpdateBlogList(UpdateView):
@@ -110,21 +114,53 @@ class DeleteBlog(DeleteView):
     template_name = 'blog/post/delete.html'
     success_url = '/blog/'
 
+# class DetailedView(DetailView):
+#     """
+#         This class is used for showing a particular blog's detail.
+#     """
+#     model = Blog
+#     #form_class = PostBlogImagesForm
+#     template_name = 'blog/post/blogdetail.html'
+#     #context_object_name = 'post'
+#     def get_context_data(self,*args, **kwargs):
+#         #title=self.request.GET.get('search')
+#         context = super().get_context_data(**kwargs)
+#         context['post'] = Blog.objects.filter(slug=self.object.slug)[0]
+#         context['images'] = PostImages.objects.filter(post=context['post'])
+#         #print(context['post'].category)
+#         context['related_blog'] = Blog.objects.filter(category = context['post'].category).exclude(id = context['post'].id)
+#         return context
+
 class DetailedView(DetailView):
     """
-        This class is used for showing a particular blog's detail.
+        This class is used for showing a particular blog's detail using redis server.
     """
     model = Blog
-    #form_class = PostBlogImagesForm
     template_name = 'blog/post/blogdetail.html'
-    #context_object_name = 'post'
     def get_context_data(self,*args, **kwargs):
-        #title=self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['post'] = Blog.objects.filter(slug=self.object.slug)[0]
-        context['images'] = PostImages.objects.filter(post=context['post'])
-        #print(context['post'].category)
-        context['related_blog'] = Blog.objects.filter(category = context['post'].category).exclude(id = context['post'].id)
+        cache_data = Red.get(self.object.slug)
+        if cache_data:
+            context['post'] = cache_data
+        else : 
+            data = Blog.objects.filter(slug=self.object.slug)[0]
+            prnt1 = data.tags.all()
+            dr = ""
+            for i in prnt1:
+                dr +=str(i) + " "
+           
+            context['post'] = {
+                'id' : data.id,
+                'title' : data.title,
+                'author' : data.author.username,
+                'body' : data.body,
+                'category' : data.category.category_name,
+                'image' : data.image.url,
+                'tags' : dr
+                }
+            redd = Red.set(self.object.slug,context['post'])
+        #context['images'] = PostImages.objects.filter(post=context['post']['id'])
+        context['related_blog'] = Blog.objects.filter(category__category_name = context['post']['category']).exclude(id = context['post']['id'])
         return context
     
 class SearchBlog(ListView):
@@ -294,4 +330,45 @@ class TagsOnlyList(ListView):
     context_object_name = 'tags'
 
 
-    
+
+from PIL import Image
+from io import BytesIO
+
+def redisfuncton(request):
+    cache_data = Red.get('2')
+    # print(cache_data)
+    # if cache_data:
+    #     print("7777777777777777777777777")
+    #     return render(request,'redis.html',{'red':cache_data})
+    # time.sleep(2)
+    data = Blog.objects.all()
+    output = BytesIO()
+    im = Image.open(data[0].image)
+    im.save(output, format=im.format)
+    print(data[0].image)
+    context = {}
+    context['post'] = {
+    'id' : data[0].id,
+    'title' : data[0].title,
+    'author' : data[0].author.username,
+    'body' : data[0].body,
+    'category' : data[0].category.category_name,
+    'image' : data[0].image.url
+    }
+    output.close()
+    print(data[0].image)
+   # print(context['post'])
+    redd = Red.set('2',context)
+    context['related_blog'] = Blog.objects.filter(category = data[0].category).exclude(id = data[0].id)
+        
+    return render(request,'redis.html',context)
+
+
+
+def redisgetfunction(request):
+    print("ooooooooooooooooooooooo")
+    value = Red.get('api')
+    print(value)
+    value = value
+    print(value)
+    return render(request,'redis.html',{'post':value})

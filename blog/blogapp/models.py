@@ -39,7 +39,7 @@ class Blog(models.Model):
     body = models.TextField()
     category = models.ForeignKey(Category,on_delete = models.CASCADE,related_name='category_posts')
     image = models.ImageField(upload_to='blog/images/',blank=True,null=True)
-    tags = models.ManyToManyField(Tag, blank=True)
+    #tags = models.ManyToManyField(Tag, blank=True)
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

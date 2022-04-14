@@ -33,4 +33,6 @@ urlpatterns = [
     path('approved/<int:pk>/',views.ApprovedByAdmin.as_view()),
     path('approved/',views.ApprovedListView.as_view()),
     path('createcontact/',views.ContactUpload),
+    path('redis/',views.redisfuncton),
+    path('redisget/',views.redisgetfunction),
 ]

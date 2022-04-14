@@ -25,14 +25,14 @@
           <b>Tags : </b>
           {{ post.tags.all|join:", " }}
           {% endif %}
-          {% if post.tags %}
-          <b>Tags : </b> {{post.tags}}
-          {% endif %}
+          
           <p><b>Category :</b> {{post.category}}</p>
         </div>
         <div class="col-6">  
-          <img class="card-img-top" style="height:300px;width:400px;" src="{% if post.image %}{{ post.image }}{% endif %}">
-              
+            <img class="card-img-top" style="height:300px;width:400px;" src="{% if post.image %}{{ post.image }}{% endif %}">
+            
+          <!-- <img class="card-img-top" style="height:300px;width:400px;" src="{% if post.image %}{{ post.image.url }}{% endif %}">
+               -->
           </div>
         </div>
         <br/>
