@@ -5,6 +5,13 @@
     <title>Drag & Drop or Browse: File Upload | CodingNepal</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+
+<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 *{
@@ -62,41 +69,25 @@
 </style>
 </head>
 <body>
-    
-  <!-- <div class="drag-area">
-    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-    <header>Drag & Drop to Upload File</header>
-    <span>OR</span>
-    <button>Browse File</button>
-    <input type="file" hidden>
-  </div> -->
 
-    =======================================================
-    <hr> 
-  <div class="drag-area">
-    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-    <header>Drag & Drop to Upload File</header>
-    <span>OR</span>
-    <button>Browse File</button>
-    <input type="file" hidden>
-  </div>
 <hr>
-  <form action="" method="post">
-    
+<form action="" method="post">
+    {% csrf_token %}
         <li id="subject" class="contact">{{ form.category_name }}</li>
         <li id="email" class="contact">{{ form.description }}</li>
         <div class="drag-area">
             <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
             <header>Drag & Drop to Upload File</header>
-            <span>OR</span>
-            <!-- <button>Browse File</button> -->
-            <input type="file" hidden>
+            {% comment %} <span>OR</span>
+            <button>Browse File</button>  {% endcomment %}
+            <input id='files' name='file' type="file" >
           </div>
     <input type="submit" value="Submit">
-</form>
+</form>  
 
-  <script >
 
+
+  <script type="text/javascript">
 //selecting all required elements
 const dropArea = document.querySelector(".drag-area"),
 dragText = dropArea.querySelector("header"),
@@ -135,16 +126,16 @@ function showFile(){
   let validExtensions = ["image/jpeg", "image/jpg", "image/png"]; //adding some valid image extensions in array
   if(validExtensions.includes(fileType)){ //if user selected file is an image file
     let fileReader = new FileReader(); //creating new FileReader object
-    console.log(fileReader)
+    console.log(file['name'])
     fileReader.onload = ()=>{
       let fileURL = fileReader.result; //passing user file source in fileURL variable
+      console.log(fileURL)
         // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
        let imgTag = `<img src="${fileURL}" alt="image">`; //creating an img tag and passing user selected file source inside src attribute
       dropArea.innerHTML = imgTag; //adding that created img tag inside dropArea container
     
     }
     fileReader.readAsDataURL(file);
-    console.log(file)
   }else{
     alert("This is not an Image File!");
     dropArea.classList.remove("active");
@@ -153,6 +144,7 @@ function showFile(){
 }
 
   </script>
+ 
 
 </body>
 </html>

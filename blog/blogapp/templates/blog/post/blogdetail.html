@@ -10,7 +10,8 @@
     <div class="col-md-8">
     <div class="row">
       <div class="col-10"></div>
-      {% if post.author == user %}
+      
+      {% if post.author == user.username %}
       <div class="col-1 "><h3><a class="btn btn-outline-primary" href="/blog/edit/{{post.slug}}">Edit</a></h3></div>
       <div class="col-1"><h3><a class="btn btn-outline-danger" href="/blog/delete/{{post.slug}}">Delete</a></h3></div>
         
@@ -19,13 +20,16 @@
         <br/>
         <br/>
         <div class = "row">
+        {% if post.author == user %}
+        jai sri ram
+        {% endif %}
           <h3>{{post.title}}</h3>
         <div class="col-6"><p>{{post.publish}} by <b>{{post.author}}</b></p>
-          {% if post.tags.all %}
+          {% comment %} {% if post.tags.all %}
           <b>Tags : </b>
           {{ post.tags.all|join:", " }}
-          {% endif %}
-          {% if post.tags %}
+          {% endif %} {% endcomment %}
+           {% if post.tags %}
           <b>Tags : </b> {{post.tags}}
           {% endif %}
           <p><b>Category :</b> {{post.category}}</p>
@@ -60,7 +64,7 @@
 
      <div class="col-sm-3 me-4" style="width: 20rem;">
       <a href="/blog/blogdetailview/{{blog.slug}}" style="text-decoration: none;">
-    <img src="{% static 'img/img1.jpg' %}" class="card-img-top" alt="...">
+    <img src="{% if blog.image %}{{ blog.image.url }}{% endif %}" class="card-img-top" alt="..." style="height:250px;width:280px;">
     <div class="card-body">
       <h5 class="card-title">{{blog.title}}</h5>
       <p class="card-text"> {{blog.body|truncatechars:50}}</p>

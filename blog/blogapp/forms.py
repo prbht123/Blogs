@@ -24,6 +24,9 @@ class ApprovedForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ['status']
+        widgets = {
+            'status': forms.Select(attrs={'placeholder': 'Status...','class':'form-control mb-2'}),
+        }
 
 class BlogUpdateForm(forms.ModelForm):
     class Meta:

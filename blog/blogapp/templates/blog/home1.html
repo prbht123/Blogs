@@ -6,18 +6,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+
+<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+
+
     <title>Document</title>
+<style>
+.box__dragndrop,
+.box__uploading,
+.box__success,
+.box__error {
+  display: none;
+}
+
+.box__dragbox_background {
+    background-color:#ebebeb;
+    opacity:0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition:'opacity 0.5s ease-in-out'
+}
+
+.box__dragbox {
+    border: 3px dashed #c1c1c1;
+    height: 200px;
+    border-radius: 10px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.box__dragtext {
+    color: grey;
+    z-index: 1;
+}
+</style>
+
 </head>
 <body>
-    <form class="box" method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}           
-        <div class="box__dragbox">
-            <div class="box__dragbox_background"></div>
-            <p class="box__dragtext jlrFontMediumBold">Drag files to upload here</p>
-        </div>
-        <div class="box__uploading">Uploading…</div>
-        <div class="box__success">Done!</div>
-        <div class="box__error">Error! <span></span>.</div>
-    </form>
+
+   <form class="box" method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}           
+    <div class="box__dragbox">
+        <div class="box__dragbox_background"></div>
+        <p class="box__dragtext jlrFontMediumBold">Drag files to upload here</p>
+    </div>
+    <div class="box__uploading">Uploading…</div>
+    <div class="box__success">Done!</div>
+    <div class="box__error">Error! <span></span>.</div>
+</form>
+
+<script type="text/javascript">
+console.log("oooooooooooooooooooooooooo")
+$(document).on("dragover", 'html', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+});
+
+$(document).on("drop", 'html', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); 
+});
+
+// Drag enter
+$(document).on('dragenter','.box__dragbox', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(".box__dragtext").text("Drop here!");
+    $(".box__dragbox_background").css({'opacity':'1'})
+});
+
+// Drag over
+$(document).on('dragover','.box__dragbox', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(".box__dragtext").text("Drop here!");
+    $(".box__dragbox_background").css({'opacity':'1'})
+});
+
+$(document).on('dragleave','.box__dragbox', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(".box__dragtext").text("Drag files to upload here");
+    $(".box__dragbox_background").css('opacity','0')
+});
+
+// Drop
+$(document).on('drop','.box__dragbox', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(".box__dragtext").text("Uploaded!");
+
+    var file = e.originalEvent.dataTransfer.files;
+    var fd = new FormData();
+    fd.append('file', file[0])
+    uploadData(fd);
+});
+
+function uploadData(formdata){
+
+    $.ajax({
+        type: 'POST',
+        headers: {'X-CSRFToken': $.cookie('csrftoken'),'id':{{ exam_id }},
+        url: window.location.href,
+        data: formdata, 
+        success: function(response){
+        if (response.uploaded) {
+            console.log("Uploaded!");
+        }
+        else {
+            console.log("Did not upload :(")
+        }
+        },
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
+    }
+</script>
+
+
+
 </body>
 </html>
