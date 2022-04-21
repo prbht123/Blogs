@@ -51,11 +51,10 @@
                         Password
                     </label>
                     <div class="input-group mb-3">{{ form.password|add_class:"form-control" }}</div>
-                    {% comment %} <p><a href="{% url 'account:password_reset' %}">Forgotten your password?</a></p>
-                     {% endcomment %}
-                     <center>
+                    <p><a href="{% url 'password_reset' %}">Forgotten your password?</a></p>
+                    <center>
                         <button class="btn btn-outline-success ml-4 mt-4" type="submit">Log In</button>
-                        <a class="btn btn-outline-primary ml-4 mt-4" type="submit" href = "{% url 'account:register' %}">Register</a>
+                        <a class="btn btn-outline-primary ml-4 mt-4" type="submit" href="{% url 'register' %}">Register</a>
                     </center>
                 </form>
             </div>

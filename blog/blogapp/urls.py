@@ -11,7 +11,7 @@ urlpatterns = [
     path('dragimagess/',views.homee),
     path('about/',views.About.as_view()),
     path('contact/',views.Contact.as_view()),
-    #path('create/',views.CreatePost.as_view()),
+    path('base/',views.CreatePost.as_view()),
     path('create/',views.AddPostView.as_view(),name = 'create_blog'),
     path('edit/<slug:slug>',views.UpdateBlogList.as_view(),name = 'edit_blog'),
     path('delete/<slug:slug>',views.DeleteBlog.as_view(),name = 'delete_blog'),

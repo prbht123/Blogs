@@ -29,27 +29,18 @@ def homee(request):
 class home(CreateView):
     model = Blog
     form_class = CategoryForm
-    template_name = 'blog/homme.html'
+    template_name = 'blog/home2.html'
     #success_url = '/blog/'
     #return render(request,'blog/home.html')
     def form_valid(self, form):
-        print("0000000000000000000000000000")
-        print(self.request.POST.get('file'))
-        print("kkkkkkkkkkkkkkkkkkkkkkkk")
-        print(self.request.FILES)
-        #print(self.request.FILES)
         data = form.save(commit=False)
-        print(data)
-        print("000000000000000000")
-        print(self.request.POST)
        # data.slug = data.category_name.lower()
-        data.image = self.request.POST.get('FILES')
-        #data.save()
-        print(data)
+        data.image = self.request.FILES['myFile']
+        data.save()
         return redirect('/blog/')
 
 class CreatePost(TemplateView):
-    template_name = 'blog/post/create.html'
+    template_name = 'base2.html'
 
 class AddedPost(APIView):
     def post(self,request):
@@ -103,6 +94,7 @@ class AddPostView(CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.author = self.request.user
+        user.image = self.request.FILES['myFile']
         tag = list(self.request.POST['tags'].split(','))
         #user.slug = user.title.lower()
         user.save()
@@ -121,6 +113,9 @@ class UpdateBlogList(UpdateView):
     def get_form_kwargs(self):
         kwargs = super(UpdateBlogList,self).get_form_kwargs()
         kwargs['instance'].status='draft'
+        if self.request.FILES:
+            kwargs['instance'].image = self.request.FILES['myFile']
+        #kwargs['instance'].image = self.request.FILES['myFile']
         kwargs.update()
         return kwargs
     
@@ -344,7 +339,7 @@ class CategoryCreate(CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
        # data.slug = data.category_name.lower()
-        data.image = self.request.FILES['image']
+        data.image = self.request.FILES['myFile']
         data.save()
         return redirect('/blog/')
 
@@ -361,7 +356,7 @@ class CategoryUpdate(UpdateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         #data.slug = data.category_name.lower()
-        data.image = self.request.FILES['image']
+        data.image = self.request.FILES['myFile']
         data.save()
         return redirect('/blog/')
 

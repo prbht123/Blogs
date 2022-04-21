@@ -1,5 +1,13 @@
-{% extends 'base.html' %}
- {% block style %}
+<!DOCTYPE html>
+
+<head>
+  <title>Drag and Drop File Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="./src/main.css">
+
+  <style>
   .drop-zone {
   max-width: 200px;
   height: 200px;
@@ -47,53 +55,22 @@
   font-size: 14px;
   text-align: center;
 }
-{% endblock %}
-{% block content %}
 
-<div class="container pt-5">
-    <form method="post" novalidate action="" enctype='multipart/form-data'>
-        {% csrf_token %}
-        {% comment %} {% for field in form.visible_fields %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{field.label}}</label>
-                {{field}}
-                {% for error in field.errors %}
-                    <span class="help-block" style="color:red">{{error}}</span>
-                {% endfor %}
-            </div>
-        {% endfor %} {% endcomment %}
+  </style>
+</head>
 
-         <label style="font-family: Source Sans Pro;
-                                  font-weight: 600;
-                                  font-size: 26px;
-                                  margin: 10px 0 0;
-                                  display: inline-block;">
-                        Category Name
-                    </label>
-                    {{form.category_name}}
-            <label style="font-family: Source Sans Pro;
-                                  font-weight: 600;
-                                  font-size: 26px;
-                                  margin: 10px 0 0;
-                                  display: inline-block;">
-                        Description 
-                    </label>
-                    {{form.description}}
-           <div class="drop-zone">
-                <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                <input type="file" name="myFile" class="drop-zone__input">
-            </div>
-          <br>
-        <div>
-            <button type="submit" class="btn btn-success">Submit</button>
-            <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
-        </div>
-    </form>
-
-</div>
-
-
- <script>
+<body>
+ <form action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+   <li id="subject" class="contact">{{ form.category_name }}</li>
+                <li id="email" class="contact">{{ form.description }}</li>
+  <div class="drop-zone">
+    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+    <input type="file" name="myFile" class="drop-zone__input">
+  </div>
+  <button type="submit" class="btn btn-primary pull-right">Upload</button>
+ </form>
+  <script>
   document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
   const dropZoneElement = inputElement.closest(".drop-zone");
 
@@ -167,5 +144,4 @@ function updateThumbnail(dropZoneElement, file) {
 }
 
   </script>
-
-{% endblock %}
+</body>
