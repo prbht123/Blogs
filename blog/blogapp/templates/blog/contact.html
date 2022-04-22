@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% endblock %}
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
+  <div class="col-sm-6 mt-4">
+     <img src="{% static 'img/bolgcontact.jpg' %}" alt="" width="100%" height="100%" style="border-radius:10px;">
+         
+</div>
+    <div class="col-sm-6">
 
 <form class="border border-light p-5" style="border: 1px solid black;" method="POST" action="/blog/createcontact/">
 {% csrf_token %}
@@ -18,14 +27,154 @@
 
   <button class="btn btn-info btn-block" type="submit">Submit</button>
 </form>
-
-
-      
-</div>
-<div class="col-md-6">
-
+ 
 </div>
 </div>
 </div>
+<div class="text-center mt-4" style = "font-weight: 20;">
+<h2 style="text-align: center;
+    font-size: 36px;
+    line-height: 87px;
+    font-weight: 500;
+    letter-spacing: 1.44px;
+    color: #060c3a;
+    opacity: 1;font-family: Poppins,sans-serif;">
+<p>Way To Reach Us</p>
+</h2>
+</div>
+ <div class="reachGridSction" style="display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    text-align: center;
+    padding: 0;">
+    <div >
+    <div >
+    <div>
+    <img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/phone_ckqi1r.svg" class=" lazyloaded" alt="Contact Us via phone" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/phone_ckqi1r.svg">
+    </div>
+    <h3 class="addonTitleNoMargin contactFontWeight contactDetailsOne" style="    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .72px;
+    color: #000a8a;
+    margin-bottom: 0;    font-family: Poppins,sans-serif;">Call Us</h3>
+    <p class="contactReactDescText" style="    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    letter-spacing: .56px;
+    color: #444;
+    opacity: 1;
+    margin-top: 6px;"><a href="#" target="_blank" rel="noopener noreferrer" class="contactLink" style="text-decoration: none;">+91 6328782682</a></p>
+    </div>
+    </div>
+    <div>
+    <div>
+    <div>
+    <img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/mail_g6c8no.svg" class=" lazyloaded" alt="Contact Us via email" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/mail_g6c8no.svg">
+    </div>
+    <h3 class="addonTitleNoMargin contactFontWeight contactDetailsOne" style="    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .72px;
+    color: #000a8a;
+    margin-bottom: 0;    font-family: Poppins,sans-serif;">Email Us</h3>
+    <p class="contactReactDescText" style="    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    letter-spacing: .56px;
+    color: #444;
+    opacity: 1;
+    margin-top: 6px;">
+    <a href="#" class="contactLink" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">blog@webkrone.com</a>
+    </p>
+    </div></div>
+    <div><div><div>
+    <img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/skype_lcigte.svg" class=" lazyloaded" alt="Contact Us via skype" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/skype_lcigte.svg">
+    </div><h3 class="addonTitleNoMargin contactFontWeight contactDetailsOne" style="    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .72px;
+    color: #000a8a;
+    margin-bottom: 0;    font-family: Poppins,sans-serif;">Skype</h3>
+    <p class="contactReactDescText" style="    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    letter-spacing: .56px;
+    color: #444;
+    opacity: 1;
+    margin-top: 6px;"><a href="#" class="contactLink" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">blogwebkrone</a>
+    </p>
+    </div></div>
+    <div><div><div>
+    <img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/whatsapp_wdympf.svg" class=" lazyloaded" alt="Contact Us via Whatsapp" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/whatsapp_wdympf.svg">
+    </div>
+    <h3 class="addonTitleNoMargin contactFontWeight contactDetailsOne" style="    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .72px;
+    color: #000a8a;
+    margin-bottom: 0;    font-family: Poppins,sans-serif;">WhatsApp</h3>
+    <p class="contactReactDescText" style="    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    letter-spacing: .56px;
+    color: #444;
+    opacity: 1;
+    margin-top: 6px;"><a href="#" class="contactLink" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">+91 6328782682</a></p>
+    </div></div><div><div><div>
+    <img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/phone_call_rgvabj.svg" class=" lazyloaded" alt="" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/phone_call_rgvabj.svg">
+    </div>
+    <h3 class="addonTitleNoMargin contactFontWeight contactDetailsOne" style="    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .72px;
+    color: #000a8a;
+    margin-bottom: 0;    font-family: Poppins,sans-serif;">For Careers</h3>
+    <p class="contactReactDescText" style="    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    letter-spacing: .56px;
+    color: #444;
+    opacity: 1;
+    margin-top: 6px;">
+    <a href="#" class="contactLink" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">+91 6328782682</a></p>
+    </div></div></div>
+ 
+ <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-xs-11 offset-xl-1 offset-lg-1 offset-md-1 offset-sm-1 offset-xs-1 mt-4 "><img data-src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/map_img_l5sp1z_mci9tw.png" class="lazyloaded" alt="Clients across the world using our products" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/map_img_l5sp1z_mci9tw.png" ></div>
 
+<div class="contactVisitBg mt-4" style ="background: #e6fff3 0 0 no-repeat padding-box;
+    border-radius: 10px;
+    opacity: 1;">
+  <div class="container" style ="padding-bottom: 56px;
+    margin-top: 60px; width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 80px 30px 0;">
+      <div class="row" style="align-items: center;display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space4" style="margin-bottom: 24px;">
+          <div style="background: #fff 0 0 no-repeat padding-box;
+          box-shadow: 0 20px 60px rgb(52 164 113 / 22%);
+          border-radius: 14px;
+          opacity: 1;
+          text-align: center;
+          padding: 40px 20px;">
+            <img src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/placeholder_uvxoja.png" class="space1 lazyloaded" alt="Map pin icon" src="https://res.cloudinary.com/dfpzh53td/f_auto,q_auto/rentallscript-website/placeholder_uvxoja.png">
+            <h2 class="contactVisitTitle">Visit Us</h2>
+            <p class="contactVisitDesc">Floor, Module - E Plot, & GP, Saltlake Incubation Centre, 3rd, XI- 8/2, EP Block, Sector V, Bidhannagar, Kolkata, West Bengal 700091, India.</p>
+
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space4" style="margin-bottom: 24px;">
+          <div class="visitTemleImg" style="text-align: right; border-radius: 14px;">
+            <img src="{% static 'img/blog11.jpg'%}" class="visitImgNoMargin lazyloaded" alt="Our location &amp; pride of madurai" height="100%" width="100%" style="border-radius:10px" >
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+   
+<br>
+<br>
 {% endblock %}

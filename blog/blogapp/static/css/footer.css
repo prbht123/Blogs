@@ -1,0 +1,59 @@
+.footerOverhidden{
+    overflow:hidden;
+    display: block;
+}
+
+.homeFooterBg{
+    background-color: #271f2b;
+    padding: 0 0 100px;
+}
+
+.container{
+    width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 80px 20px 0;
+}
+
+.homeFooterOne{
+    text-align: center;
+    border-bottom: 1px solid #49434d;
+    padding-bottom: 80px;
+}
+
+.lazyloaded{
+    max-width: 100%;
+    padding: 0;
+    margin: 0 0 1.45rem;
+}
+
+.footerReady{
+    color: #b5b0b7;
+    font-size: 41px;
+    display: inline-block;
+    margin: 0 0px 0 13px;
+}
+
+.row.mt-4{
+    text-align: left;
+    padding-bottom: 0px;
+}
+
+.col-sm-3{
+    color:azure;
+}
+
+.fa{
+    font-size:22px;
+    color:azure;
+    font-size: xx-small;
+}
+
+.lead{
+    font-size: x-small;
+}
+
+.tt.text-start{
+    font-size: small;
+    font-weight: 400;
+}
