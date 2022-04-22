@@ -14,7 +14,7 @@ r = redis.StrictRedis(host=settings.REDIS_HOST,
 class Red:
     def set(cache_key,data):
         data = json.dumps(data)
-        data = r.set(cache_key,data)
+        data = r.set(cache_key,data,ex=60*60*24)
         return data
 
     def get(cache_key):
@@ -24,4 +24,9 @@ class Red:
         print(cache_data)
         cache_data = json.loads(cache_data.decode('utf-8'))
         return cache_data
-
+    
+    def delete(cache_key):
+        pp = r.delete(cache_key)
+        print(pp)
+        #kk = redis.delete(*X)
+        return pp

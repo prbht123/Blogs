@@ -15,23 +15,32 @@ from django.utils import timezone
 from .utills import Red
 import time
 
+
+
+def homee(request):
+    if request.method == 'POST':
+        print("000000000000000000")
+        print(request.FILES.get('file'))
+        return redirect('/blog/')
+    else:
+        return render(request,'blog/homee.html')
+
+
 class home(CreateView):
     model = Blog
     form_class = CategoryForm
-    template_name = 'blog/home1.html'
+    template_name = 'blog/home2.html'
     #success_url = '/blog/'
     #return render(request,'blog/home.html')
     def form_valid(self, form):
-        print("0000000000000000000000000000")
-        print(self.request)
         data = form.save(commit=False)
        # data.slug = data.category_name.lower()
-        data.image = self.request.FILES['image']
+        data.image = self.request.FILES['myFile']
         data.save()
         return redirect('/blog/')
 
 class CreatePost(TemplateView):
-    template_name = 'blog/post/create.html'
+    template_name = 'base2.html'
 
 class AddedPost(APIView):
     def post(self,request):
@@ -85,6 +94,7 @@ class AddPostView(CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.author = self.request.user
+        user.image = self.request.FILES['myFile']
         tag = list(self.request.POST['tags'].split(','))
         #user.slug = user.title.lower()
         user.save()
@@ -103,6 +113,9 @@ class UpdateBlogList(UpdateView):
     def get_form_kwargs(self):
         kwargs = super(UpdateBlogList,self).get_form_kwargs()
         kwargs['instance'].status='draft'
+        if self.request.FILES:
+            kwargs['instance'].image = self.request.FILES['myFile']
+        #kwargs['instance'].image = self.request.FILES['myFile']
         kwargs.update()
         return kwargs
     
@@ -140,9 +153,13 @@ class DetailedView(DetailView):
     def get_context_data(self,*args, **kwargs):
         context = super().get_context_data(**kwargs)
         cache_data = Red.get(self.object.slug)
+        #delt = Red.delete(self.object.slug)
+        # print(delt)
         if cache_data:
+            print("cache_detail from cahche server")
             context['post'] = cache_data
         else : 
+            print("from database ")
             data = Blog.objects.filter(slug=self.object.slug)[0]
             prnt1 = data.tags.all()
             dr = ""
@@ -151,31 +168,75 @@ class DetailedView(DetailView):
            
             context['post'] = {
                 'id' : data.id,
+                'slug' : data.slug,
                 'title' : data.title,
                 'author' : data.author.username,
                 'body' : data.body,
                 'category' : data.category.category_name,
                 'image' : data.image.url,
-                'tags' : dr
+                'tags' : dr,
+                'status' : data.status
                 }
             redd = Red.set(self.object.slug,context['post'])
         #context['images'] = PostImages.objects.filter(post=context['post']['id'])
         context['related_blog'] = Blog.objects.filter(category__category_name = context['post']['category']).exclude(id = context['post']['id'])
         return context
-    
+
 class SearchBlog(ListView):
     """
-    Class view functon to handle search 
+    Class view functon to handle search with using redis server
     """
-    template_name = 'blog/post/bloglist.html'
+    template_name = 'blog/post/bloglistr.html'
     model=Blog
     #context_object_name = 'posts'
     def get_context_data(self, **kwargs):
+        print("0000000000000000000000000")
         title = self.request.GET.get('search')
+        title = (title.replace(' ','-')).lower()
+        print(title)
         context = super().get_context_data(**kwargs)
-        context['posts'] = Blog.objects.filter(title = title,status = 'published')
+        cache_data = Red.get(title)
+        #delt = Red.delete(self.object.slug)
+        # print(delt)
+        if cache_data:
+            print("cache_detail from cahche server")
+            context['post'] = cache_data
+            print(context['post'])
+        else : 
+            print("from database ")
+            data = Blog.objects.filter(slug=title)[0]
+            prnt1 = data.tags.all()
+            dr = ""
+            for i in prnt1:
+                dr +=str(i) + " "
+           
+            context['post'] = {
+                'id' : data.id,
+                'slug' : data.slug,
+                'title' : data.title,
+                'author' : data.author.username,
+                'body' : data.body,
+                'category' : data.category.category_name,
+                'image' : data.image.url,
+                'tags' : dr,
+                'status' : data.status
+                }
         context['categories'] = Category.objects.all()
         return context
+
+# class SearchBlog(ListView):
+#     """
+#     Class view functon to handle search 
+#     """
+#     template_name = 'blog/post/bloglist.html'
+#     model=Blog
+#     #context_object_name = 'posts'
+#     def get_context_data(self, **kwargs):
+#         title = self.request.GET.get('search')
+#         context = super().get_context_data(**kwargs)
+#         context['posts'] = Blog.objects.filter(title = title,status = 'published')
+#         context['categories'] = Category.objects.all()
+#         return context
 
 class SearchBlogUser(ListView):
     """
@@ -187,7 +248,7 @@ class SearchBlogUser(ListView):
     def get_context_data(self, **kwargs):
         title = self.request.GET.get('search')
         context = super().get_context_data(**kwargs)
-        context['posts'] = Blog.objects.filter(title = title,author = request.user)
+        context['posts'] = Blog.objects.filter(title = title,author = self.request.user)
         return context
 
 class CategoryList(ListView):
@@ -255,14 +316,15 @@ def ContactUpload(request):
         obj = ContactDetail(
         name = request.POST.get('name'),
         email = request.POST.get('email'),
-        mobile_number = request.POST.get('mobile_number'),
-        messages = request.POST.get('messages')
+        mobile_number = request.POST.get('mobile'),
+        messages = request.POST.get('message')
         )
         obj.save()
         cd={
             'to':'Admin123@YOPmail.com'
         }
-        send_mail("subject", "message",request.POST.get('email'),[cd['to']])
+        msg=request.POST.get('message')
+        send_mail("subject",msg,request.POST.get('email'),[cd['to']])
         return redirect('/blog/')
 
 class CategoryOnlyList(ListView):
@@ -277,7 +339,7 @@ class CategoryCreate(CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
        # data.slug = data.category_name.lower()
-        data.image = self.request.FILES['image']
+        data.image = self.request.FILES['myFile']
         data.save()
         return redirect('/blog/')
 
@@ -294,7 +356,7 @@ class CategoryUpdate(UpdateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         #data.slug = data.category_name.lower()
-        data.image = self.request.FILES['image']
+        data.image = self.request.FILES['myFile']
         data.save()
         return redirect('/blog/')
 
